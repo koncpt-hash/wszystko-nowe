@@ -1,0 +1,39 @@
+/* Robocze style szkieletu. Docelowy wygląd przyjdzie z projektu w Figmie.
+   Zasady: tylko IBM Plex Sans, minimum 12 px, bez wersalików. */
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#f3f4f7, #0c0e12);
+  --paper: light-dark(#ffffff, #15181e);
+  --ink: light-dark(#0d1015, #f2f4f8);
+  --muted: light-dark(#5d6573, #8c95a3);
+  --line: light-dark(#dfe3ea, #272c35);
+  --accent: light-dark(#3a2bff, #8a82ff);
+  --open: light-dark(#00a878, #26d39b);
+  --build: light-dark(#ff5f15, #ff7a33);
+  --plan: light-dark(#9aa2ae, #6f7785);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 "IBM Plex Sans", system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 16px 48px; }
+.narrow { max-width: 420px; }
+h1 { font-size: 34px; line-height: 1.05; margin: 0 0 16px; letter-spacing: -0.02em; }
+h2 { font-size: 22px; margin: 0; }
+h3 { font-size: 18px; margin: 6px 0 2px; line-height: 1.3; }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.err { color: var(--build); }
+.top { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--ink); margin-bottom: 16px; }
+.tabs { display: flex; gap: 0; border: 1px solid var(--line); background: var(--paper); }
+.tabs button, button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 8px 14px; cursor: pointer; min-height: 40px; }
+.tabs button { border: 0; }
+.tabs button + button { border-left: 1px solid var(--line); }
+.tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+button[type="submit"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+input[type="email"] { font: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+.stack { display: grid; gap: 10px; }
+.list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.card { background: var(--paper); border: 1px solid var(--line); padding: 14px; }
+.pill { font-size: 12px; padding: 2px 7px; color: var(--paper); border-radius: 2px; }
+.pill.open { background: var(--open); } .pill.build { background: var(--build); } .pill.plan { background: var(--plan); }
+.log { background: var(--paper); border: 1px solid var(--line); padding: 12px 12px 12px 28px; font-size: 14px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
