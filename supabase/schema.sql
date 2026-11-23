@@ -119,6 +119,13 @@ create policy "allowed sessions" on public.photo_sessions for all using (public.
 drop policy if exists "allowed photos" on public.photos;
 create policy "allowed photos" on public.photos for all using (public.is_allowed()) with check (public.is_allowed());
 
+-- 7b. Uprawnienia: nowe projekty Supabase nie dają ich domyślnie tabelom tworzonym skryptem
+grant usage on schema public to authenticated, service_role;
+grant select, insert, update, delete on public.places, public.routes, public.photo_sessions, public.photos to authenticated;
+grant select on public.allowed_users to authenticated;
+grant execute on function public.is_allowed() to authenticated;
+grant all on all tables in schema public to service_role;
+
 -- 8. Prywatny magazyn na zdjęcia
 insert into storage.buckets (id, name, public)
 values ('photos', 'photos', false)
