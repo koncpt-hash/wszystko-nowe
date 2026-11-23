@@ -25,8 +25,10 @@ jobs:
           set -e
           mkdir -p backup
           for t in places routes photo_sessions photos; do
+            AUTH=()
+            case "$KEY" in sb_*) ;; *) AUTH=(-H "Authorization: Bearer $KEY") ;; esac
             curl -sf "$URL/rest/v1/$t?select=*" \
-              -H "apikey: $KEY" -H "Authorization: Bearer $KEY" \
+              -H "apikey: $KEY" "${AUTH[@]}" \
               | python3 -m json.tool --indent 1 > "backup/$t.json"
           done
       - name: Zapisz zmiany
