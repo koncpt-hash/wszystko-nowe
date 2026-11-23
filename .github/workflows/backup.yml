@@ -23,13 +23,20 @@ jobs:
           KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           set -e
+          URL="$(printf '%s' "$URL" | tr -d '[:space:]')"; URL="${URL%/}"
+          KEY="$(printf '%s' "$KEY" | tr -d '[:space:]')"
           mkdir -p backup
           for t in places routes photo_sessions photos; do
             AUTH=()
             case "$KEY" in sb_*) ;; *) AUTH=(-H "Authorization: Bearer $KEY") ;; esac
-            curl -sf "$URL/rest/v1/$t?select=*" \
-              -H "apikey: $KEY" "${AUTH[@]}" \
-              | python3 -m json.tool --indent 1 > "backup/$t.json"
+            code=$(curl -s -o "backup/$t.raw" -w '%{http_code}' "$URL/rest/v1/$t?select=*" \
+              -H "apikey: $KEY" "${AUTH[@]}")
+            if [ "$code" != "200" ]; then
+              echo "Tabela $t: HTTP $code"; head -c 400 "backup/$t.raw"; echo
+              exit 1
+            fi
+            python3 -m json.tool --indent 1 "backup/$t.raw" > "backup/$t.json"
+            rm "backup/$t.raw"
           done
       - name: Zapisz zmiany
         run: |
